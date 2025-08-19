@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人体姿态识别 - 毫米波雷达技术引领者</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-content {
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        }
+
+        .nav {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .section {
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #333;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-left: 5px solid #667eea;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .feature-description {
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .tech-highlights {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .tech-card {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .tech-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .tech-content {
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+
+        .formula {
+            background: rgba(0,0,0,0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            white-space: pre-line;
+        }
+
+        .value-section {
+            background: #f8f9fa;
+        }
+
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .value-card {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .value-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .value-label {
+            font-size: 1.2rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .future-section {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .future-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .future-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .contact-section {
+            background: white;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .features-grid,
+            .tech-grid,
+            .value-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- 头部区域 -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <h1>人体姿态识别</h1>
+                    <p>基于FMCW毫米波雷达的智能感知技术</p>
+                    <a href="#contact" class="cta-button">了解更多</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- 导航栏 -->
+        <nav class="nav">
+            <div class="container">
+                <div class="nav-content">
+                    <div class="nav-brand">
+                        <h3>毫米波雷达技术</h3>
+                    </div>
+                    <div class="nav-links">
+                        <a href="#features">技术特色</a>
+                        <a href="#tech">核心技术</a>
+                        <a href="#value">核心价值</a>
+                        <a href="#future">未来前景</a>
+                        <a href="#contact">联系我们</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 技术特色 -->
+        <section id="features" class="section">
+            <div class="container">
+                <h2 class="section-title">技术特色</h2>
+                <div class="features-grid">
+                    <div class="feature-card" v-for="feature in features" :key="feature.id">
+                        <div class="feature-icon">{{ feature.icon }}</div>
+                        <h3 class="feature-title">{{ feature.title }}</h3>
+                        <p class="feature-description">{{ feature.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 核心技术 -->
+        <section id="tech" class="section tech-highlights">
+            <div class="container">
+                <h2 class="section-title" style="color: white;">核心技术</h2>
+                <div class="tech-grid">
+                    <div class="tech-card" v-for="tech in techHighlights" :key="tech.id">
+                        <h3 class="tech-title">{{ tech.title }}</h3>
+                        <div class="tech-content">
+                            <p>{{ tech.description }}</p>
+                            <div v-if="tech.formula" class="formula">{{ tech.formula }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 核心价值 -->
+        <section id="value" class="section value-section">
+            <div class="container">
+                <h2 class="section-title">核心价值</h2>
+                <div class="value-grid">
+                    <div class="value-card" v-for="value in coreValues" :key="value.id">
+                        <div class="value-number">{{ value.number }}</div>
+                        <div class="value-label">{{ value.label }}</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 未来前景 -->
+        <section id="future" class="section future-section">
+            <div class="container">
+                <h2 class="section-title" style="color: white;">未来前景</h2>
+                <div class="future-content">
+                    <p class="future-text" v-for="prospect in futureProspects" :key="prospect.id">
+                        {{ prospect.text }}
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 联系我们 -->
+        <section id="contact" class="section contact-section">
+            <div class="container">
+                <h2 class="section-title">联系我们</h2>
+                <form class="contact-form" @submit.prevent="submitForm">
+                    <div class="form-group">
+                        <label class="form-label">姓名</label>
+                        <input type="text" class="form-input" v-model="contactForm.name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">邮箱</label>
+                        <input type="email" class="form-input" v-model="contactForm.email" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">公司</label>
+                        <input type="text" class="form-input" v-model="contactForm.company">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">留言</label>
+                        <textarea class="form-input" rows="4" v-model="contactForm.message" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">发送消息</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <div class="container">
+                <p>&copy; 2024 人体姿态识别技术. 保留所有权利.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    features: [
+                        {
+                            id: 1,
+                            icon: '🔬',
+                            title: '物理原理扎实',
+                            description: '基于FMCW毫米波雷达的电磁波传播理论，具有坚实的科学基础和理论支撑。'
+                        },
+                        {
+                            id: 2,
+                            icon: '⚡',
+                            title: '信号处理先进',
+                            description: '结合DSP+FPGA平台实现实时数据处理，运用FFT、MUSIC等先进算法。'
+                        },
+                        {
+                            id: 3,
+                            icon: '🧠',
+                            title: '深度学习创新',
+                            description: '设计基于注意力机制的RLA深度识别网络，实现高精度姿态识别。'
+                        },
+                        {
+                            id: 4,
+                            icon: '🎯',
+                            title: '性能卓越',
+                            description: '距离分辨率0.04m，角度分辨率1°，识别准确率达到99%。'
+                        }
+                    ],
+                    techHighlights: [
+                        {
+                            id: 1,
+                            title: 'FMCW毫米波雷达物理基础',
+                            description: 'FMCW（调频连续波）雷达通过发射线性调频信号并接收反射回波，利用差频信号计算目标的距离、速度和角度。',
+                            formula: '距离测量: R = c·τ/2\n速度测量: v = λ·Δϕ/(4π·T)\n角度测量: θ = arcsin(λ·Δφ/(2π·d))'
+                        },
+                        {
+                            id: 2,
+                            title: '信号处理技术',
+                            description: '结合DSP+FPGA平台实现实时数据处理，运用快速傅里叶变换（FFT）、多重信号分类（MUSIC）算法提升定位精度。',
+                            formula: '距离分辨率: 0.04m\n角度分辨率: 1°'
+                        },
+                        {
+                            id: 3,
+                            title: '深度学习模型创新',
+                            description: '设计基于注意力机制的RLA深度识别网络，通过短时傅里叶变换（STFT）提取目标多普勒特征。',
+                            formula: '识别准确率: 99%\n支持动作类别: 5类'
+                        }
+                    ],
+                    coreValues: [
+                        {
+                            id: 1,
+                            number: '99%',
+                            label: '识别准确率'
+                        },
+                        {
+                            id: 2,
+                            number: '0.04m',
+                            label: '距离分辨率'
+                        },
+                        {
+                            id: 3,
+                            number: '1°',
+                            label: '角度分辨率'
+                        },
+                        {
+                            id: 4,
+                            number: '5类',
+                            label: '支持动作'
+                        }
+                    ],
+                    futureProspects: [
+                        {
+                            id: 1,
+                            text: '智能家居：实现无接触的人体姿态识别，提升智能家居的交互体验和安全性。'
+                        },
+                        {
+                            id: 2,
+                            text: '医疗健康：应用于康复训练、跌倒检测、睡眠监测等医疗场景，为健康管理提供新方案。'
+                        },
+                        {
+                            id: 3,
+                            text: '工业应用：在智能制造、安全监控、人机交互等领域发挥重要作用。'
+                        },
+                        {
+                            id: 4,
+                            text: '自动驾驶：为车内乘客状态监测、手势控制等提供技术支持。'
+                        }
+                    ],
+                    contactForm: {
+                        name: '',
+                        email: '',
+                        company: '',
+                        message: ''
+                    }
+                };
+            },
+            methods: {
+                submitForm() {
+                    alert('感谢您的留言！我们会尽快回复您。');
+                    this.contactForm = {
+                        name: '',
+                        email: '',
+                        company: '',
+                        message: ''
+                    };
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
